@@ -1,0 +1,37 @@
+@startuml
+' Título del diagrama
+title Diagrama de Casos de Uso - Gestión de Productos
+
+' Dirección del diagrama (opcional, pero ayuda a la legibilidad)
+left to right direction
+
+' --- Definición del Actor ---
+actor Administrador
+
+' --- Casos de Uso (dentro del sistema) ---
+rectangle "Sistema de Inventario Gonzalez" {
+  usecase "Gesionar Producto" as UC_Gestion
+  usecase "Registrar Producto" as UC_Create
+  usecase "Consultar Productos" as UC_Read
+  usecase "Actualizar Producto" as UC_Update
+  usecase "Eliminar Producto" as UC_Delete
+}
+
+' --- Relaciones Actor -> Casos de Uso ---
+' El administrador puede iniciar todas estas acciones
+Administrador -- UC_Gestion
+'Administrador -- UC_Create
+'Administrador -- UC_Read
+'Administrador -- UC_Update
+'Administrador -- UC_Delete
+
+' --- Relaciones entre Casos de Uso ---
+' Para cualquier acción CRUD, es REQUERIDO (include) haber iniciado sesión.
+'UC_Gestion ..> UC_Create : <<include>>
+'UC_Gestion   ..> UC_Create : <<extends>>
+UC_Gestion   ..> UC_Create
+UC_Gestion   ..> UC_Read
+UC_Gestion ..> UC_Update
+UC_Gestion ..> UC_Delete
+
+@enduml

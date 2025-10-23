@@ -1,0 +1,52 @@
+@startuml
+' Título del diagrama
+title Diagrama de Clases - MVC Producto
+
+' Ocultar miembros vacíos para un look más limpio
+hide empty members
+skinparam classAttributeIconSize 0
+
+' --- Clase Producto (El Modelo) ---
+class Producto {
+  - int id
+  - String nombre
+  - double precio
+  - int cantidad
+  --
+  + getters/setters()
+  + toString() : String
+}
+
+' --- Clase ProductoDAO (Acceso a Datos) ---
+class ProductoDAO {
+  - List<Producto> listaProductos
+  --
+  + agregar(Producto p) : void
+  + buscarPorId(int id) : Producto
+  + eliminar(int id) : void
+  + listar() : List<Producto>
+}
+
+' --- Clase ControladorProducto (El Controlador) ---
+class ControladorProducto {
+  - ProductoDAO dao
+  --
+  + registrarProducto(Producto p) : void
+  + mostrarProductos() : List<Producto>
+  + eliminarProducto(int id) : void
+}
+
+' --- Relaciones ---
+
+' 1. El Controlador TIENE UN DAO (Agregación)
+' (Reflejando el atributo "ProductoDAO dao")
+ControladorProducto o-- "1" ProductoDAO : "dao"
+
+' 2. El DAO GESTIONA MUCHOS Productos (Agregación)
+' (Reflejando el atributo "List<Producto> listaProductos")
+ProductoDAO o-- "0..*" Producto : "listaProductos"
+
+' 3. El Controlador USA la clase Producto (Dependencia)
+' (Para registrar, mostrar, etc.)
+ControladorProducto ..> Producto : "usa"
+@enduml

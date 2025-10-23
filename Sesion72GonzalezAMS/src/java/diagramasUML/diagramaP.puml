@@ -1,0 +1,50 @@
+@startuml
+' Título del diagrama
+title Diagrama de Paquetes MVC (Proyecto JSP)
+
+' --- Actores Externos ---
+actor "Usuario (Navegador)" as User
+database "Base de Datos" as DB
+
+' --- Paquetes de la Aplicación ---
+package "Proyecto Web (Aplicación)" {
+
+    ' Paquete de Vista (Archivos Web de NetBeans)
+    package "Web Pages (vista)" as View <<JSP, HTML, CSS, JS, Bootstrap>>
+
+    ' Paquetes Fuente (Source Packages de NetBeans)
+    package "Source Packages" {
+        package "controlador" as Controller <<Conexión, Acceso a Datos>>
+        package "modelo" as Model <<JavaBeans, POJO>>
+    }
+}
+
+' --- so Dependencias (Relaciones <<use>>) ---
+' El controlador es el centro de la lógica
+Controller ..> Model : "usa"
+
+
+' El DAO necesita el modelo y la utilidad de conexión
+DAO ..> Model : "crea/usa"
+DAO ..> Controller : "usa (Conexión)"
+
+
+' --- Flujo de la Petición (Interacción) ---
+' 1. El usuario hace una petición al Servlet
+User -up-> Controller : "1. Petición HTTP (GET/POST)"
+
+
+
+' 2. El DAO Gestion la BBDD
+DAO -> DB : "3. Gestion SQL"
+
+' 3. El Controlador reenvía a la Vista
+Controller -down-> View : "4. Reenvía (Forward)"
+
+' 4. La Vista se muestra al usuario
+View -up-> User : "5. Renderiza HTML"
+
+' Ocultar miembros vacíos para un look más limpio
+hide empty members
+
+@enduml
